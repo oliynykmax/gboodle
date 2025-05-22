@@ -33,16 +33,31 @@ var (
 
 type CubeState [54]color.NRGBA
 
+func rotateSide(baseIndex int, s CubeState) CubeState {
+	tempC := s[baseIndex]
+	s[baseIndex] = s[baseIndex+6]   // 33
+	s[baseIndex+6] = s[baseIndex+8] // 35
+	s[baseIndex+8] = s[baseIndex+2] // 29
+	s[baseIndex+2] = tempC
+	tempE := s[baseIndex+1]
+	s[baseIndex+1] = s[baseIndex+3] // 30
+	s[baseIndex+3] = s[baseIndex+7] // 34
+	s[baseIndex+7] = s[baseIndex+5] // 32
+	s[baseIndex+5] = tempE
+	return s
+}
+
 func doR(s CubeState) CubeState {
 	U := 0
 	//L := 9
 	F := 18
-	//R := 27
+	R := 27
 	B := 36
 	D := 45
 	R1 := 2
 	R2 := 5
 	R3 := 8
+
 	temp1 := s[U+2]
 	temp2 := s[U+2+3]
 	temp3 := s[U+2+3+3]
@@ -61,6 +76,7 @@ func doR(s CubeState) CubeState {
 	s[B] = temp1
 	s[B+3] = temp2
 	s[B+3+3] = temp3
+	s = rotateSide(R, s)
 	return s
 }
 
