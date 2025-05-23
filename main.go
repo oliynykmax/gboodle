@@ -33,6 +33,59 @@ var (
 
 type CubeState [54]color.NRGBA
 
+func rotateLeft[T any](s []T) {
+
+	firstElement := s[0]
+
+	for i := 0; i < len(s)-1; i++ {
+		s[i] = s[i+1]
+	}
+	s[len(s)-1] = firstElement
+}
+
+func doU(s CubeState) CubeState {
+	U := 0
+	L := 9
+	F := 18
+	R := 27
+	B := 36
+	//D := 45
+	//R1 := 2
+	//R2 := 5
+	//R3 := 8
+
+	s = rotateSide(U, s)
+	stack := make([]color.NRGBA, 12)
+	stack[0] = s[F]
+	stack[1] = s[F+1]
+	stack[2] = s[F+2]
+	stack[3] = s[R]
+	stack[4] = s[R+1]
+	stack[5] = s[R+2]
+	stack[6] = s[B]
+	stack[7] = s[B+1]
+	stack[8] = s[B+2]
+	stack[9] = s[L]
+	stack[10] = s[L+1]
+	stack[11] = s[L+2]
+	rotateLeft(stack)
+	rotateLeft(stack)
+	rotateLeft(stack)
+	s[F] = stack[0]
+	s[F+1] = stack[1]
+	s[F+2] = stack[2]
+	s[R] = stack[3]
+	s[R+1] = stack[4]
+	s[R+2] = stack[5]
+	s[B] = stack[6]
+	s[B+1] = stack[7]
+	s[B+2] = stack[8]
+	s[L] = stack[9]
+	s[L+1] = stack[10]
+	s[L+2] = stack[11]
+	return s
+}
+
 func rotateSide(baseIndex int, s CubeState) CubeState {
 	tempC := s[baseIndex]
 	s[baseIndex] = s[baseIndex+6]   // 33
@@ -127,6 +180,8 @@ func NewSolvedCube(scramble string) CubeState {
 		case "R2":
 			s = doR(s)
 			s = doR(s)
+			//case "U":
+			//	s = doU(s)
 
 		}
 	}
